@@ -1,0 +1,65 @@
+Index: src/com/company/BacktrackingSolver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/company/BacktrackingSolver.java	(revision )
++++ src/com/company/BacktrackingSolver.java	(revision )
+@@ -7,10 +7,9 @@
+ 
+ 
+     private Sample sample;
+-    private int currentRow;
+-    private int currentColumn;
+-
++    
+ 
++
+     public BacktrackingSolver(Sample sample){
+         this.sample = sample;
+     }
+@@ -31,16 +30,15 @@
+         return (sample.get(rowNumber,columnNumber)==0);
+     }
+ 
+-    private void setNext(){
+-        if (currentRow == sample.getLenght()-1 && currentColumn == sample.getLenght()-1){
+-            return;
++    private int[] getNext(int rowNumber, int columnNumber){
++        if (rowNumber == sample.getLenght()-1 && columnNumber == sample.getLenght()-1){
++            return null;
+         }
+-        if (currentColumn < sample.getLenght()-1){
+-            currentColumn = 0;
+-            currentRow++;
++        if (columnNumber < sample.getLenght()-1){
++            return new int[]{0, rowNumber+1};
+         }
+         else {
+-            currentColumn++;
++            return new int[]{columnNumber+1, rowNumber};
+         }
+     }
+ 
+@@ -48,12 +46,16 @@
+         if (isSolved()){
+             return true;
+         }
+-        if (!isUnsolvedCell(currentRow, currentColumn)){
+-            setNext();
+-            return solve();
++        if (!isUnsolvedCell(row, column)){
++            int[] nextCell = getNext(row, column);
++            if (nextCell != null) {
++                row = nextCell[0];
++                column = nextCell[1];
++//                return solve(nextCell[0], nextCell[1]);
+-        }
++            }
++        }
+         for (int number = 1; number <= sample.getBase(); number++){
+-            if (!sample.isSafe(number, currentRow, currentColumn)){
++            if (!sample.isSafe(number, , currentColumn)){
+                 continue;
+             }
+                 int row = currentRow;
